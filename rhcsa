@@ -1,0 +1,546 @@
+https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam?section=Objectives
+
+Study points for the exam
+	RHCSA exam candidates should be able to accomplish the tasks below without assistance. These have been grouped into several categories.
+	1. Understand and use essential tools
+		○ Access a shell prompt and issue commands with correct syntax
+			§ ls -lhtra
+			§ Info ls
+			§ Man ls
+			§ /etc/ directory is the main system directory for configuration files
+			§ /lib/ directory is meant to store system library files
+			§ /usr/bin/ and /usr/sbin/ hold important user and system utilities
+			§ /opt/ directory may be used by some applications to hold installed files
+			§ /dev/ directory contains files that map to all installed and recognized devices on the system 
+			§ Filesystems /sys/ and /proc/ are created on demand, in memory, to provide information on the system as its running
+		○ Use input-output redirection (>, >>, |, 2>, etc.)
+			§ (0), known as standard input STDIN , (1), called standard output STDOUT (2), called standard error  STDERR
+			§ ls -hali > lsout.txt , right angle bracket above lets the shell know that for the duration of this single operation, you intend outfile.txt to replace the terminal as STDOUT
+			§ ls -hali 2> lserr.txt , redirect error messages to file
+			§ ls <nonexistentfile> > lsallout.txt 2>&1
+			§ sort < lsout.txt redirect inputs to commands that take input from STDIN 
+			§ echo "That's all folks" >> lsout.txt , Appending to Files
+			§ ls -hali |sort |head -1 , A Pipe is a command line operator that redirects the output of one command directly into the standard input of a second command to form a single command from a chain of utilities that produce and consume output from each other
+		○ Use grep and regular expressions to analyze text
+			§ The grep utility can be used to search for text in a file or files. For example, to look for your own username in the /etc/passwd file, use the following
+			§ egrep '\<[0-9]\>' /etc/passwd , egrep for regular expressions
+		○ Access remote systems using SSH
+			§ Remote systems can be accessed by a variety of different methods, including ssh, vnc, freenx, telnet, and rdp. ssh and vnc are the most commonly used methods for accessing Linux systems remotely
+		○ Log in and switch users in multiuser targets
+			§ Su - user
+		○ Archive, compress, unpack, and uncompress files using tar, star, gzip, and bzip2
+		○ Create and edit text files
+		○ Create, delete, copy, and move files and directories
+		○ Create hard and soft links
+			§ ln lserr.txt tp , A hard link is a file that points to the same underlying inode, as another file
+			§ ln -s lserr.txt tp1 , symbolic link (also known as soft link) is a link to another filename in the filesystem
+		○ List, set, and change standard ugo/rwx permissions
+			§ chmod -R u=rwx,g=rwx,o=rx /opt/scm/udeploy
+		○ Locate, read, and use system documentation including man, info, and files in /usr/share/doc
+			§ whatis ls
+			§ apropos ls
+		○ Find all files owned by harry User
+			§ find / -user harry
+		○ Find a string "strato" from the location 
+			§ grep "strato" /tmp/text.txt  > /tmp/serach
+	2. Create simple shell scripts
+		○ Conditionally execute code (use of: if, test, [], etc.)
+			#!/bin/bash
+			n=10
+			if [ $((n%2))==0 ]
+			then
+			  echo "The number is even."
+			else
+			  echo "The number is odd."
+			fi
+			
+			§ [m73267@cilsdbxd58965 test]$ test 100 -gt 99 && echo "Yes, that's true." || echo "No, that's false."
+		Yes, that's true
+		○ Use Looping constructs (for, etc.) to process file, command line input
+			§ for VARIABLE in 1 2 3 4 5 .. N
+			§ do
+				§ command1
+				§ command2
+				§ commandN
+			§ done
+			
+		○ Process script inputs ($1, $2, etc.)
+			§ To pass arguments
+			§ $# to find no of arguments
+		○ Processing output of shell commands within a script
+			#!/bin/bash
+			
+			echo "path to change"
+			read PATH_TO_FIX
+			
+			echo $PATH_TO_FIX
+			
+		○ Processing shell command exit codes
+			§ the standard exit code is 0 for success and any number from 1 to 255 for anything else
+			#!/bin/bash
+			
+			cat file.txt  
+			
+			if [ $? -eq 0 ]
+			then
+			  echo "The script ran ok"
+			  exit 0
+			else
+			  echo "The script failed" >&2
+			  exit 1
+			fi
+			
+			
+	3. Operate running systems
+		○ Boot, reboot, and shut down a system normally
+			systemctl reboot or reboot
+			systemctl halt or halt
+			systemctl poweroff or poweroff
+		○ Boot systems into different targets manually
+			§ systemctl list-units --type target
+			§ systemctl set-default
+			§ systemctl  isolate graphical.target
+		○ Interrupt the boot process in order to gain access to a system
+			§ Restore root id password https://www.certdepot.net/rhel7-interrupt-boot-gain-access-system/
+		○ Identify CPU/memory intensive processes and kill processes
+		○ Adjust process scheduling
+			§ chrt -p 2747
+			[root@cilsdbxd58965 m73267]# chrt -m
+			SCHED_OTHER min/max priority    : 0/0
+			SCHED_FIFO min/max priority     : 1/99
+			SCHED_RR min/max priority       : 1/99
+			SCHED_BATCH min/max priority    : 0/0
+			SCHED_IDLE min/max priority     : 0/0
+			SCHED_DEADLINE min/max priority : 0/0
+			§ chrt -b -p 0 2747
+			§ chrt -f -p 50 2747
+		○ Manage tuning profiles
+			§ tuned-adm active
+			§ tuned-adm profile powersave
+			§ tuned-adm off
+			§ tuned-adm profile_info powersave
+			§ Get recommended profile tuned-adm recommend
+		○ Locate and interpret system log files and journals
+			§ ll /var/log/var/log/secure - log file for all users logging in 
+			[root@cilsdbxd58965 m73267]# systemd-analyze
+			Startup finished in 745ms (kernel) + 8.445s (initrd) + 29.489s (userspace) = 38.680s
+			§ Journalctl
+			§ journalctl /sbin/crond
+			§ journalctl -u crond.service
+			§ journalctl --since=today
+			§ journalctl -p err
+		○ Preserve system journals
+			§ Journal log gets cleared after reboot
+			§  echo "SystemMaxUse=50M" >> /etc/systemd/journald.conf
+		○ Start, stop, and check the status of network services
+			§ service sshd status
+			§  systemctl status sshd
+			§ systemctl is-active sshd
+			§ systemctl is-active mask , don’t start at reboot
+		○ Securely transfer files between systems
+			§ scp
+	4. Configure local storage ***
+		○ List, create, delete partitions on MBR and GPT disks
+			§ Blkid
+			[root@cilsdbxd58965 m73267]# lsblk
+			NAME              MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+			vda               252:0    0  100G  0 disk
+			├─vda1            252:1    0    1M  0 part
+			├─vda2            252:2    0    1G  0 part /boot
+			├─vda3            252:3    0   49G  0 part
+			│ ├─rootvg-lvroot 253:0    0    2G  0 lvm  /
+			│ ├─rootvg-lvswap 253:1    0    4G  0 lvm  [SWAP]
+			│ ├─rootvg-lvusr  253:2    0    4G  0 lvm  /usr
+			│ ├─rootvg-lvtmp  253:3    0    2G  0 lvm  /tmp
+			│ ├─rootvg-lvhome 253:4    0    2G  0 lvm  /home
+			│ ├─rootvg-lvvar  253:5    0    4G  0 lvm  /var
+			│ └─rootvg-lvopt  253:6    0    4G  0 lvm  /opt
+			└─vda4            252:4    0   50G  0 part
+			§ Partprobe update partition
+			§ fdisk /dev/mapper/rootvg-lvopt
+			
+		○ Create and remove physical volumes
+		○ Assign physical volumes to volume groups
+		○ Create and delete logical volumes
+		○ Configure systems to mount file systems at boot by universally unique ID (UUID) or label
+		○ Add new partitions and logical volumes, and swap to a system non-destructively
+			§ Lsblk
+			§ Mkswap /dev/vdb1
+			§ Free -m
+			§ Swapon /dev/vdb1
+			§ Vi /etc/fstab , add that volume
+			§ Mount -a
+	5. Create and configure file systems
+		○ Create, mount, unmount, and use vfat, ext4, and xfs file systems
+			[root@cilsdbxd58965 m73267]# lvs
+			File descriptor 63 (pipe:[1515679]) leaked on lvs invocation. Parent PID 29493: /bin/bash
+			  LV     VG     Attr       LSize Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+			  lvhome rootvg -wi-ao---- 2.00g
+			  lvopt  rootvg -wi-ao---- 4.00g
+			  lvroot rootvg -wi-ao---- 2.00g
+			  lvswap rootvg -wi-ao---- 4.00g
+			  lvtmp  rootvg -wi-ao---- 2.00g
+			  lvusr  rootvg -wi-ao---- 4.00g
+			  lvvar  rootvg -wi-ao---- 4.00g
+			[root@cilsdbxd58965 m73267]# vgs
+			File descriptor 63 (pipe:[1515714]) leaked on vgs invocation. Parent PID 29493: /bin/bash
+			  VG     #PV #LV #SN Attr   VSize   VFree
+			  appvg    1   0   0 wz--n- <50.00g <50.00g
+			  rootvg   1   7   0 wz--n- <49.00g <27.00g
+			§ lvcreate -L 1G -n lv1 vg1
+			§ mkfs.vfat /dev/rootvg/lvopt
+			§ Mount /dev/rootvg/lvopt /opt/temp
+			§ vi /etc/fstab , add /dev/mapper/rootvg-lvopt /opt                    xfs     defaults        0 0
+			§ Umount /opt/temp
+			§ Check mount 
+			[root@cilsdbxd58965 m73267]# fsck.vfat  /dev/rootvg/lvopt
+			fsck.fat 3.0.20 (12 Jun 2013)
+			Logical sector size is zero.
+			§ mkfs.ext4/dev/rootvg/lvopt , same commands to mount and unmount
+			§ mkfs.xfs -f /dev/rootvg/lvopt1
+			§ xfs_repair /dev/rootvg/lvopt
+			§ xfs_info /dev/rootvg/lvopt
+		○ Mount and unmount network file systems using NFS
+			§ yum install nfs-utils
+			§ mount -t nfs 10.0.2.5:/home/nfs-share /mnt
+			§ vi /etc/fstab , add 10.0.2.5:/home/nfs-share /mnt                   xfs     defaults        0 0
+			§ umount /mnt
+		○ Extend existing logical volumes
+			§ [root@cilsdbxd58965 m73267]# lvextend -L+1G /dev/mapper/rootvg-lvopt
+			File descriptor 63 (pipe:[1519466]) leaked on lvextend invocation. Parent PID 29493: /bin/bash
+			  Size of logical volume rootvg/lvopt changed from 4.00 GiB (1024 extents) to 5.00 GiB (1280 extents).
+			  Logical volume rootvg/lvopt successfully resized.
+			[root@cilsdbxd58965 m73267]# df -Th , -T gives filesystem type
+			Filesystem                Type      Size  Used Avail Use% Mounted on
+			/dev/mapper/rootvg-lvopt  xfs       4.0G  215M  3.8G   6% /opt
+			§ resize2fs /dev/mapper/rootvg-lvopt
+			§  xfs_growfs /dev/mapper/rootvg-lvopt
+			[root@cilsdbxd58965 m73267]# df -Th , size increased 
+			Filesystem                Type      Size  Used Avail Use% Mounted on
+			//dev/mapper/rootvg-lvopt  xfs       5.0G  215M  4.8G   5% /opt
+		○ Create and configure set-GID directories for collaboration
+			§ [root@cilsdbxd58965 m73267]#groupadd devops
+			[root@cilsdbxd58965 m73267]# chown nobody:devops /opt/shared
+			[root@cilsdbxd58965 m73267]# chmod g+s /opt/shared , set user or group ID on execution (s) the permissions granted to other users who are members of the file's group (g) 
+			[root@cilsdbxd58965 m73267]# chmod 770 /opt/shared
+		○ Sysadmin Group to have access to folder /common/admin
+			§  chgrp sysadmin /common/admin
+		○ Only user and group can access directory
+			§ chmod -R 2770 /common/admin
+				§ 2 sticky
+				§ 7 rwx 4+2+1 - user
+				§ 7 rwx 4+2+1 - group
+				§ 0 none - other
+			○ Sarah does not have permission to access /var/tmp/fstab
+				§ setfacl -m u:sarah:--- fstab
+		○ Configure disk compression
+			§ yum install vdo kmod-kvdo
+			§ vdo create --name=vdo1 --device=/dev/mapper/rootvg-lvopt1 --vdoLogicalSize=1G --writePolicy=auto --force
+			§ mkfs.xfs /dev/mapper/rootvg-lvopt1
+			§ Mount /dev/mapper/rootvg-lvopt1 /opt/temp
+		○ Manage layered storage(stratis)
+			§ dnf install stratisd stratis-cli
+			§  systemctl enable stratisd
+			§  stratis pool create strat1 /dev/vda1
+			§ Check video
+		○ Diagnose and correct file permission problems
+	6. Deploy, configure, and maintain systems ***
+		○ Schedule tasks using at and cron
+			§ [root@cilsdbxd58965 m73267]# at now +1 minute
+			at> echo "Test" > test.txt
+			at> <EOT>
+			job 1 at Mon Dec 21 14:24:00 2020
+			[root@cilsdbxd58965 m73267]# atq
+			§ at 3pm +3 days - script.sh , run job in 3 days at 3 pm 
+			§ https://crontab.guru/
+			§ crontab -e
+			§ crontab -l
+			§ vi /etc/cron.daily/logrotate
+			§ User runs daily at 14:23 /bin/echo hiya
+				§ 23 14 * * * /bin/echo/hiya
+			§ Every 3 min
+				§ */3 * * * * /bin/echo/hiya
+			§ Run cron every 20 seconds,
+				§ ***** sleep 20 ; /bin/echo hiya
+				§ ***** sleep 40 ; /bin/echo hiya
+				§ ***** sleep 60 ; /bin/echo hiya
+				
+		○ Start and stop services and configure services to start automatically at boot
+			§  systemctl reload-or-restart atd
+			§ systemctl enable atd , adds it at boot
+			§ [root@cilsdbxd58965 m73267]# systemctl is-enabled atd
+			Enabled
+			§ systemctl list-dependencies atd
+			§ systemctl mask atd , remove from reboot 
+		○ Configure systems to boot into a specific target automatically
+			§ systemctl list-units --type target --all
+			§ systemctl set-default multi-user.target
+		○ Configure time service clients
+			§ touch log-`date +%d%m$Y`.log
+			§  hwclock -s , set software clock to hardware clock
+			§ Timedatectl
+			§ timedatectl set-time 2020-12-21
+			§ systemctl enable chronyd
+			§ vi /etc/chrony.conf
+			§ chronyc sources -v
+			§ man chronyd
+		○ Install and update software packages from Red Hat Network, a remote repository, or from the local file system
+			§ dnf repolist all
+			§ dnf repoinfo
+			§ dnf info nano
+			§ dnf install nano
+			§ dnf provides "*/bin/nano"
+			§ Dnf localinstall rpm_package_name 
+			§ dnf groups list
+			§ dnf group install "System Tools"
+			§ dnf group remove "System Tools"
+			§ dnf history list
+			§ dnf history undo 28
+			§ dnf history redo 28
+			§ dnf install dnf-utils , to add and disable repos
+			§ Create a remote repository from the local file system
+			§ yum-config-manager --add-repo https://repo.text.com
+			§ dnf install createrepo
+			§ mkdir /root/local_repo and copy rpm file to this directory
+			§ createrepo --database /root/local_rep
+			§ yum-config-manager --add-repo file:///root/local_repo
+			§  vi /etc/yum.repos.d/root_local_repo.repo
+			§ dnf update
+			§ yum-config-manager --disablerepo local_repo
+			§ dnf repolist all
+		○ Work with package module streams
+			§  dnf module list
+			§ dnf module info --profile php
+			§ dnf module install php
+			§ dnf module remove php
+			§ dnf module reset php
+			§  dnf module install php:7.3/minimal
+		○ Modify the system bootloader , GRUB Grand Unified Boot loader
+			§ grub2-editenv list
+			§ grub2-set-default 1
+			§ vi /etc/default/grub , to safely change the grub file 
+			§ grub2-mkconfig -o /boot/grub2/grub.cfg
+			§  vi /boot/grub2/grub.cfg
+	7. Manage basic networking ***
+		○ Configure IPv4 and IPv6 addresses
+			§ nmcli connection show
+			§ nmcli device
+			§ Nmcli connection delete epso
+			§ nmcli connection add con-name eth0 ifname np0s8 type ethernet ipv4 10.0.2.16/24 gw4 10.0.2.1
+			§ Nmcli connection modify etho ipv4.addresses 10.0.2.15/24
+		○ Configure hostname resolution
+			§ vi /etc/hostname
+			§ Hostnamectl
+			[root@cilsdbxd58965 m73267]# cat /etc/resolv.conf
+			### File managed with Ansible Tower by CIGNA CLOUD SERVICES ###
+			# Ansible managed by [ansible_linux_resolv] module.
+			
+			domain silver.com
+			nameserver 10.44.12.13
+			nameserver 10.27.182.13
+			search sys.cigna.com silver.com cpc.sys.cigna.com infra.cigna.com cigna.com internal.cigna.com
+			options timeout:1 attempts:1
+			§ Nmcli connection modify eth0 ipv4.dns "8.8.8.8"
+			§ Nmcli  reload
+			§ Add new IP and Hostname to test DNS resolution
+			[root@cilsdbxd58965 m73267]# cat /etc/hosts
+			127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+			::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+			10.29.64.109     cilsdbxd58965.silver.com     cilsdbxd589
+		○ Configure network services to start automatically at boot
+				§ systemctl enable NetworkManager
+				§ nmcli connection modify eth0 connection.autoconnect yes
+		○ Restrict network access using firewall-cmd/firewall
+			§ [root@cilsdbxd58965 m73267]# firewall-cmd --get-zones
+			block dmz drop external home internal public trusted work
+			§ [root@cilsdbxd58965 m73267]# firewall-cmd --new-zone servers --permanent
+			success
+			§ [root@cilsdbxd58965 m73267]# firewall-cmd --reload
+			success
+			§ [root@cilsdbxd58965 m73267]# firewall-cmd --zone servers --add-service=ssh --permanent
+			success
+			[root@cilsdbxd58965 m73267]# firewall-cmd --reload
+			success
+			[root@cilsdbxd58965 m73267]# firewall-cmd --zone servers --list-all
+			servers
+			  target: default
+			  icmp-block-inversion: no
+			  interfaces:
+			  sources:
+			  services: ssh
+			  ports:
+			  protocols:
+			  masquerade: no
+			  forward-ports:
+			  source-ports:
+			  icmp-blocks:
+			  rich rules:
+			§ Ifconfig , to check config
+			§ [root@cilsdbxd58965 m73267]# firewall-cmd --change-interface=lo --zone servers
+			success
+			§ [root@cilsdbxd58965 m73267]# firewall-cmd --get-active-zones
+			public
+			  interfaces: eth0
+			servers
+			  interfaces: lo
+			§ firewall-cmd --set-default-zone=servers
+			§ firewall-cmd --add-service=http
+			§ firewall-cmd --remove-service=http --permanent
+	8. Manage users and groups
+		○ Create, delete, and modify local user accounts
+		○ Change passwords and adjust password aging for local user accounts
+		○ Create, delete, and modify local groups and group memberships
+			§ Add natasha to sysadmin group
+				§ usermod -aG sysadmin natasha
+			§ User harry does not have access to interactive shell and is not member of sysadmin
+				§ useradd -s /sbin/nologin harry
+			§ Delete user ,home diretory and mail spool
+				§ userdel -r harry
+		○ Configure superuser access
+			§ visudo -f /etc/sudoer
+			§ Usermod  -aG wheel user1 , wheel  is default group for root access
+			§ User2 ALL(root) /bin/ls , /bin/df -h,/bin/date
+	9. Manage security ***
+		○ Configure firewall settings using firewall-cmd/firewalld
+			§ Ip Forwarding 
+				§ vi /etc/sysctl.conf
+				§ net.ipv4.ip_forward=1
+				[root@cilsdbxd58965 m73267]# sysctl -p
+				vm.swappiness = 10
+				kernel.sysrq = 1
+				kernel.unknown_nmi_panic = 0
+				kernel.panic_on_unrecovered_nmi = 0
+				kernel.hung_task_panic = 0
+				net.ipv4.tcp_challenge_ack_limit = 2147483647
+				net.ipv4.ip_forward = 1
+				§ [root@cilsdbxd58965 m73267]# sysctl -a | grep ip_forward
+				§ dnf install firewall-config
+				§ Check videos
+		○ Create and use file access control lists
+			[root@cilsdbxd59152 tmp]# getfacl testfile1
+			# file: testfile1
+			# owner: root
+			# group: root
+			user::rw-
+			group::r--
+			other::r--
+			
+			[root@cilsdbxd59152 tmp]# ls -ltra testfile1
+			-rw-r--r--. 1 root root 0 Dec 23 09:06 testfile1
+			§ setfacl -m u:devops:rw- testfile1
+			§ -rw-rw-r--+ 1 root root 0 Dec 23 09:06 testfile1 , "+ " indicates that acl has been enabled
+			[root@cilsdbxd59152 tmp]# getfacl testfile1
+			# file: testfile1
+			# owner: root
+			# group: root
+			user::rw-
+			user:devops:rw-
+			group::r--
+			mask::rw-
+			other::r--
+			§ setfacl -x u:devops testfile1 , -x to remove permissions
+			§ setfacl -m g:devops:rwx testdir1 , g for group 
+			§ setfacl -R -m g:devops:rwx testdir1 , -R for recursive
+			§ Vi /etc/fstab and add acl to defaults
+			
+		○ Configure key-based authentication for SSH
+			§ ssh-keygen -t rsa
+			§ https://www.ibm.com/support/knowledgecenter/SSIGMP_1.0.0/igi/unixandlinux/install_config/t_key_unilinux.htm
+		○ Set enforcing and permissive modes for SELinux
+			§ SeLinux is applied at the OS level
+			§ cat /etc/selinux/config , 3 modes 
+				#     enforcing - SELinux security policy is enforced.
+				#     permissive - SELinux prints warnings instead of enforcing.
+				#     disabled - No SELinux policy is loaded.
+				§ ls -lZ
+				§ cat /etc/selinux/targeted/setrans.conf
+				[root@cilsdbxd59152 tmp]# getenforce
+				Permissive
+				§ [root@cilsdbxd59152 tmp]# sestatus
+				SELinux status:                 enabled
+				SELinuxfs mount:                /sys/fs/selinux
+				SELinux root directory:         /etc/selinux
+				Loaded policy name:             targeted
+				Current mode:                   permissive
+				Mode from config file:          permissive
+				Policy MLS status:              enabled
+				Policy deny_unknown status:     allowed
+				Memory protection checking:     actual (secure)
+				Max kernel policy version:      31
+				§ setenforce 1 , enforcing
+				§ setenforce 0 , Permissive
+				[root@cilsdbxd59152 tmp]# ls -ldZ /home/
+				drwxr-xr-x. 5 root root system_u:object_r:home_root_t:s0 47 Dec 23 09:09 /home/
+				home_root_t is a diff context 
+				§ [root@cilsdbxd59152 html]# firewall-cmd --permanent --add-service=http
+				success
+				§ [root@cilsdbxd59152 html]# firewall-cmd --permanent --add-service=https
+				success
+				§ [root@cilsdbxd59152 html]# firewall-cmd --reload
+				§ http://cilsdbxd59152.silver.com/ is accessible
+				§ chcon unconfined_u:object_r:var_t:s0 index.html , after this change url is not accessible
+				§ tail -f  /var/log/messages | grep SELinux  to see error messages
+				§ SELinux is preventing httpd from map access on the file /var/www/html/index.html. For complete SELinux messages run: sealert -l 86e24635-51a6-456b-b42f-909bd56af23a
+				
+				§ To disable SELinxu go to vi /etc/selinux/config and SELINUX=disabled and reboot server
+				[root@cilsdbxd59152 html]# sestatus
+				SELinux status:                 enabled
+				SELinuxfs mount:                /sys/fs/selinux
+				SELinux root directory:         /etc/selinux
+				Loaded policy name:             targeted
+				Current mode:                   permissive
+				Mode from config file:          permissive , this shows the mode setup in /etc/selinux/config
+				Policy MLS status:              enabled
+				Policy deny_unknown status:     allowed
+				Memory protection checking:     actual (secure)
+				Max kernel policy version:      31
+				§ ps -efZ to see context of all services
+				unconfined_u    :    object_r  :    httpd_sys_content_t:   s0
+				user 		: 	role :                  	type             :  level
+		○ List and identify SELinux file and process context
+		○ Restore default file contexts
+		○ Set context on port 2658
+			§  semanage port -l |grep 2658
+			§ semanage port -a -t ftp_port_t -p tcp 2658
+			[root@cilsdbxd59152 yum.repos.d]# semanage port -l |grep 2658
+			ftp_port_t                     tcp      2658, 21, 989, 990
+			
+		○ Use boolean settings to modify system SELinux settings
+		○ Diagnose and address routine SELinux policy violations
+			§ https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/using_selinux/changing-selinux-states-and-modes_using-selinux
+	10. Manage containers
+		○ Find and retrieve container images from a remote registry
+			§ docker pull nginx
+			§ docker ps -a , list all containers
+		○ Inspect container images
+			§ docker inspect  ubuntu:latest
+		○ Perform container management using commands such as podman and skopeo
+			§ podman pull fedora:latest
+			§ podman run -it myfedora bash
+			§ Skopeo is a tool for moving container images between different types of container storages. 
+			§ skopeo copy docker://registry.access.redhat.com/ubi8-init docker://reg.company.com/ubi-init
+			§ skopeo delete docker://localhost:5000/imagename:latest
+		○ Perform basic container management such as running, starting, stopping, and listing running containers
+			§ docker ps -a
+			§ docker container stop yaong
+		○ Run a service inside a container
+		○ Configure a container to start automatically as a systemd service
+			FROM systemd_rawhide
+			RUN yum -y install httpd; yum clean all; systemctl enable httpd.service
+			EXPOSE 80
+			CMD [“/usr/sbin/init”]
+			§ Cd /etc/systemd/system
+			§ podman generate systemd --name web 
+			§ Vi container-web.service ,add content from the above command
+			§  systemctl daemon-reload
+			§  systemctl enable --now container-web.service
+		○ Attach persistent storage to a container
+			§ https://dev.to/jibinliu/how-to-persist-data-in-docker-container-2m72
+			§ docker run -it --name=yaong2 -v /opt/host-volume:/opt/host-volume ubuntu:latest /bin/bash
+			§ docker exec -it a29e467fd131 /bin/bash
+			§ Sudo podman run -d --name web -p 8888:8080 -v /srv/web:/var/www/html:Z -e HTTPD_MPM=event registry.redhat.io/rhel8/httpd-24:1-112
+			§ podman run -d --name web -p 8888:8080 -v /opt/test:/var/www/html:Z -e HTTPD_MPM=event rhscl/httpd-24-rhel7
+			§ Curl http://localhost:8888/
+As with all Red Hat performance-based exams, configurations must persist after reboot without intervention.
+
+From <https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam?section=Objectives> 
