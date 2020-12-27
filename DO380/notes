@@ -1,0 +1,124 @@
+rdacosta@redhat.com 
+https://gitlab.com/users/rgdacosta/projects
+https://github.com/rgdacosta/cigna_ocp_resources/blob/main/interesting_reads
+Openshift Container Platform 4.5 DO380 Red Hat OpenShift Administration III : Scaling Kubernetes Deployments in the Enterprise
+https://classroom.google.com/c/MTg1NjcwMDU2NTYw?cjc=k2xephn
+
+Deploy using Deployment or Deployment Config 
+https://docs.openshift.com/container-platform/4.5/applications/deployments/what-deployments-are.html
+
+https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/
+https://www.elastic.co/blog/the-go-client-for-elasticsearch-working-with-data
+
+  
+#kubectl references:
+https://kubernetes.io/docs/reference/kubectl/#output-options
+https://kubernetes.io/docs/reference/kubectl/overview/
+https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/
+#OpenShift CLI tools:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/cli_tools/
+#Kustomize:
+https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+#Templates:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/images/index#using-templates
+#Deployments vs DeploymentConfigs:
+https://docs.openshift.com/container-platform/4.1/applications/deployments/what-deployments-are.html#deployments-comparing-deploymentconfigs_what-deployments-are
+#Ingress:
+https://www.youtube.com/watch?v=VicH6KojwCI
+https://www.openshift.com/blog/kubernetes-ingress-vs-openshift-route
+#ImageStreams:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/images/index#managing-image-streams
+#Learn more about JSONPath:
+https://kubernetes.io/docs/reference/kubectl/jsonpath/
+#Using jq:
+https://stedolan.github.io/jq/
+#OpenShift RBAC:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/authentication_and_authorization/index#using-rbac
+#Scheduled Jobs:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/nodes/index#nodes-nodes-jobs
+#API Paths:
+https://docs.openshift.com/container-platform/4.5/rest_api/objects/index.html
+#Ansible:
+https://www.ansible.com/resources
+https://opensource.com/article/19/12/ansible-resources
+#Operators:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/operators/index
+http://operatorhub.io
+https://enterprisersproject.com/article/2019/2/kubernetes-operators-plain-english
+https://docs.openshift.com/container-platform/4.2/operators/olm-what-operators-are.html
+https://kubernetes.io/docs/concepts/architecture/controller/
+#Building Operators:
+https://github.com/operator-framework/operator-sdk/blob/master/doc/user-guide.md
+https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
+#Jenkins DSL:
+https://www.jenkins.io/doc/book/pipeline/syntax/
+#Kubernetes plug-in for Jenkins: 
+https://github.com/jenkinsci/kubernetes-plugin
+#Kubernetes Credentials plug-in for Jenkins:
+https://github.com/jenkinsci/kubernetes-credentials-plugin
+#OpenShift Sync plug-in for Jenkins:
+https://github.com/jenkinsci/openshift-sync-plugin
+#OpenShift Jenkins Pipeline (DSL) plug-in:
+https://github.com/jenkinsci/openshift-client-plugin
+#Declarative Kubernetes:
+https://kubernetes.io/docs/tasks/manage-kubernetes-objects/declarative-config/
+https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+#GitOps: A Path to More Self-service IT:
+https://queue.acm.org/detail.cfm?id=3237207/
+#LDAP Identity Provider integration:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/authentication_and_authorization/index#configuring-ldap-identity-provider
+#Configuring certificates:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/authentication/index#configuring-certificates
+#Configuring the cluster-wide proxy: 
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/networking/index#enable-cluster-wide-proxy
+#Adding API server certificates:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/authentication/index#api-server-certificates
+#Securing Secrets with Vault:
+https://www.openshift.com/blog/integrating-hashicorp-vault-in-openshift-4
+https://www.openshift.com/blog/managing-secrets-openshift-vault-integration
+#CoreOS Architecture:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html/architecture/architecture-rhcos
+#Adding RHEL to OCP Clusters:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/machine_management/index#adding-rhel-compute
+#Declarative configurations for OCP nodes:
+https://www.redhat.com/en/blog/openshift-container-platform-4-how-does-machine-config-pool-work
+#Storage Basics:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/storage/index#understanding-persistent-storage
+#Storage Dynamic Provisioning:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html-single/storage/index#defining-storage-classes_dynamic-provisioning
+#Cluster Monitoring:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html/monitoring/cluster-monitoring
+#AlertManager:
+https://prometheus.io/docs/alerting/0.20/configuration/
+#Prometheus:
+https://prometheus.io/docs/introduction/overview/
+#Prometheus Storage: 
+https://prometheus.io/docs/prometheus/latest/storage/
+#Prometheus Data Model:
+https://prometheus.io/docs/concepts/data_model/
+#PromQL:
+https://prometheus.io/docs/prometheus/2.15/querying/basics/
+#Grafana:
+https://grafana.com/docs/grafana/v6.2/guides/getting_started/
+#Utilization, Saturation, Errors:
+http://www.brendangregg.com/usemethod.html
+#ElasticSearch Queries:
+https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-query-string-query.html#query-string-syntax
+#ElasticSearch Indices:
+https://www.elastic.co/blog/what-is-an-elasticsearch-index
+#ElasticSearch Shards:
+https://www.elastic.co/blog/how-many-shards-should-i-have-in-my-elasticsearch-cluster
+#Tuning ElasticSearch:
+https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-indexing-speed.html#_use_faster_hardware
+#Timelion Tutorial - From Zero to Hero:
+https://www.elastic.co/blog/timelion-tutorial-from-zero-to-hero 
+#Kibana Guide - Visualizing your data: 
+https://www.elastic.co/guide/en/kibana/6.8/tutorial-visualizing.html
+#Taints and tolerances:
+https://www.openshift.com/blog/taints-expectations-vs.-reality
+#Derek the DevOps Dinosaur:
+https://medium.com/@springdo/derek-the-devops-dinosaur-f9ece02030ad
+#Verifying Cluster Logging:
+https://docs.openshift.com/container-platform/4.5/logging/troubleshooting/cluster-logging-cluster-status.html
+
+From <https://github.com/rgdacosta/cigna_ocp_resources/blob/main/interesting_reads> 
